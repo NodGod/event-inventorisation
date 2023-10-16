@@ -1,8 +1,8 @@
 import * as bodyParser from "body-parser";
+import * as express from 'express';
+import router from "./routes";
 import { Request, Response } from "express";
 import { AppDataSource } from "./data-source";
-import { Routes } from "./routes";
-import * as express from 'express';
 import { Item } from "./entity/Item";
 import { OrganisedEvent } from "./entity/Event";
 import { Organiser } from "./entity/Organiser";
@@ -12,30 +12,29 @@ AppDataSource.initialize()
     // create express app
     const app = express();
     app.use(bodyParser.json());
+    app.use('/api', router);
     //app.use(auth);
-
-    // register express routes from defined application routes
-    Routes.forEach((route) => {
-      (app as any)[route.method](
-        route.route,
-        (req: Request, res: Response, next: Function) => {
-          const result = new (route.controller as any)()[route.action](
-            req,
-            res,
-            next,
-          );
-          if (result instanceof Promise) {
-            result.then((result) =>
-              result !== null && result !== undefined
-                ? res.send(result)
-                : undefined
-            );
-          } else if (result !== null && result !== undefined) {
-            res.json(result);
-          }
-        },
-      );
-    });
+    // Routes.forEach((route) => {
+    //   (app as any)[route.method](
+    //     route.route,
+    //     (req: Request, res: Response, next: Function) => {
+    //       const result = new (route.controller as any)()[route.action](
+    //         req,
+    //         res,
+    //         next,
+    //       );
+    //       if (result instanceof Promise) {
+    //         result.then((result) =>
+    //           result !== null && result !== undefined
+    //             ? res.send(result)
+    //             : undefined
+    //         );
+    //       } else if (result !== null && result !== undefined) {
+    //         res.json(result);
+    //       }
+    //     },
+    //   );
+    // });
 
     // setup express app here
 
@@ -46,13 +45,13 @@ AppDataSource.initialize()
     await seedDB();
 
     console.log(
-      "Express server has started on port 3000. Open http://localhost:3000/hobbies to see results",
+      "Express server has started on port 3000. Open http://localhost:3000 to see results",
     );
   }).catch((error) => console.log(error));
 
 async function seedDB() {
   // insert new hobbies for test
-  const res = await AppDataSource.manager.find(Item);
+  const res = await AppDataSource.manager.find(Organiser);
   if (res.length === 0) {
     const item1 = new Item();
     item1.name = "Duct tape 50m";
@@ -77,9 +76,9 @@ async function seedDB() {
     event1.items = [item1, item2, item3];
     await AppDataSource.manager.save(event1);
     const item4 = new Item();
-    item3.name = "Hot Tub";
-    item3.price = 200;
-    item3.quantity = 2;
+    item4.name = "Hot Tub";
+    item4.price = 200;
+    item4.quantity = 2;
     await AppDataSource.manager.save(item4);
     const event2 = new OrganisedEvent();
     event2.name = "Buk Sveikas";
@@ -95,35 +94,4 @@ async function seedDB() {
     organiser1.events = [event1, event2];
     await AppDataSource.manager.save(organiser1);
   }
-    // const adminUser = new User();
-    // adminUser.email = "admin@admin.com";
-    // adminUser.name = "Admin";
-    // adminUser.nickname = "admin";
-    // adminUser.password =
-    //   "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918";
-    // adminUser.surname = "Admin";
-    // adminUser.type = UserType.Admin;
-    // const adminUserCreated = await AppDataSource.manager.save(adminUser);
-
-    // const otherUser = new User();
-    // otherUser.email = "other@other.com";
-    // otherUser.name = "Other";
-    // otherUser.nickname = "other";
-    // otherUser.password =
-    //   "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918";
-    // otherUser.surname = "Other";
-    // otherUser.type = UserType.HobbyFinder;
-    // const otherUserCreated = await AppDataSource.manager.save(otherUser);
-
-    // const hobby1 = await AppDataSource.manager.save(
-    //   AppDataSource.manager.create(Hobby, {
-    //     name: "Cooking",
-    //     type: HobbyType.PASSIVE,
-    //     place: HobbyPlace.INDOORS,
-    //     attempts: 1,
-    //     attemptDuration: 10,
-    //     userHobbies: [userHobby1],
-    //     routes: [],
-    //   }),
-    // );
 }

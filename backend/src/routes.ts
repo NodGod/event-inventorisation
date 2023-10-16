@@ -1,10 +1,9 @@
-import { OrganiserController } from "./controller/OrganiserController";
+import * as express from 'express';
+import * as OrganiserController from './controller/OrganiserController';
 
-export const Routes = [
-    {
-      method: "get",
-      route: "/friends",
-      controller: OrganiserController,
-      action: "all",
-    },
-];
+const router = express.Router();
+
+router.post('/organisers', OrganiserController.createOrganiser);
+router.get('/organisers', OrganiserController.getAllOrganisers);
+
+export default router;
