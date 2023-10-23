@@ -320,7 +320,7 @@ const createItem = async(e: SyntheticEvent) => {
                         />
                         </Form.Group>
                         <Form.Group controlId="price">
-                        <Form.Label>Email</Form.Label>
+                        <Form.Label>Price</Form.Label>
                         <Form.Control
                             type="text"
                             value={newItem.price}
