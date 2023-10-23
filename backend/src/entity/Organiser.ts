@@ -15,6 +15,6 @@ export class Organiser {
   @Column()
   email: string;
 
-  @OneToMany(() => OrganisedEvent, event => event.organiser)
+  @OneToMany(() => OrganisedEvent, event => event.organiser, {cascade: true})
   events: OrganisedEvent[];
 }

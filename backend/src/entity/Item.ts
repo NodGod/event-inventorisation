@@ -15,6 +15,6 @@ export class Item {
   @Column()
   price: number;
 
-  @ManyToOne(() => OrganisedEvent, event => event.items)
+  @ManyToOne(() => OrganisedEvent, event => event.items, {onDelete: 'CASCADE'})
   event: OrganisedEvent;
 }

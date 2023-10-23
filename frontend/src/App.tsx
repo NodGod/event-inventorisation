@@ -1,63 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import Organiser from './interfaces/Organiser';
-import { Button, Modal, Table } from "react-bootstrap";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "leaflet/dist/leaflet.css";
+import { WithNav, WithoutNav } from "./components/";
 
-const App: React.FC = () => {
-  const testy = "AAAA";
-  const [orgs, setData] = useState<any[]>([]);
+import OrganiserListView from "./views/Organiser/OrganiserListView";
+import HomeView from "./views/Home/HomeView";
+import EventListView from "./views/Event/EventListView";
+import ItemListView from "./views/Item/ItemListView";
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/api/organisers');
-        console.log('Response data:', response.data.organisers);
-        setData(response.data.organisers);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-  
-    fetchData();
-  }, []);
-  
 
+function App() {
   return (
-    <div>
-        <h2>Organisation list</h2>
-        
-        {Array.isArray(orgs) && orgs.length > 0 ? (
-          <Table striped bordered hover>
-          <thead>
-          <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Phone Number</th>
-              <th>Email</th>
-          </tr>
-          </thead>
-          <tbody>
-          {orgs.map((channel) => (
-              <tr key={channel.id}>
-              <td>{channel.id}</td>
-              <td>{channel.name}</td>
-              <td>{channel.phoneNumber}</td>
-              <td>{channel.email}</td>
-              <td>
-                  <Button>
-                      View
-                  </Button>
-              </td>
-              </tr>
-          ))}
-          </tbody>
-          </Table>  
-        ) : (
-          <p>No data available</p>
-        )}
-
-        </div>
+    <BrowserRouter>
+        <Routes>
+          <Route element={<WithNav />}>
+            <Route path="/" element={<HomeView />} />
+            <Route path="/home" element={<HomeView />} />
+            <Route path="/organisers" element={<OrganiserListView />} />
+            <Route path="/events" element={<EventListView />} />
+            <Route path="/items" element={<ItemListView />} />
+          </Route>
+        </Routes>
+    </BrowserRouter>
   );
-};
+}
 
 export default App;

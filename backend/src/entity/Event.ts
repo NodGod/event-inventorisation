@@ -19,9 +19,9 @@ export class OrganisedEvent {
   @Column()
   address: string;
 
-  @ManyToOne(() => Organiser, organiser => organiser.events)
+  @ManyToOne(() => Organiser, organiser => organiser.events, {onDelete: 'CASCADE'})
   organiser: Organiser;
 
-  @OneToMany(() => Item, item => item.event)
+  @OneToMany(() => Item, item => item.event, {cascade: true})
   items: Item[];
 }

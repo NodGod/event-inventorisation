@@ -1,4 +1,5 @@
 import Item from './Item';
+import Organiser from './Organiser';
 export default interface OrganisedEvent {
   id: number;
   name: string;
@@ -6,4 +7,6 @@ export default interface OrganisedEvent {
   date: Date;
   address: string;
   items: Item[];
+  organiser: Organiser;
+  organiserId: number;
 }
