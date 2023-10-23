@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Organiser from './interfaces/Organiser';
+import Organiser from '../../interfaces/Organiser';
 import { Button, Modal, Table } from "react-bootstrap";
 
-const App: React.FC = () => {
-  const testy = "AAAA";
-  const [orgs, setData] = useState<any[]>([]);
+const OrganiserListView = () => {
+  const [orgs, setData] = useState<Organiser[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,7 +44,10 @@ const App: React.FC = () => {
               <td>{channel.email}</td>
               <td>
                   <Button>
-                      View
+                      Edit
+                  </Button>
+                  <Button>
+                      Delete
                   </Button>
               </td>
               </tr>
@@ -56,8 +58,8 @@ const App: React.FC = () => {
           <p>No data available</p>
         )}
 
-        </div>
+    </div>
   );
 };
 
-export default App;
+export default OrganiserListView;
